@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     })
     .catch((ex)=>{
         console.log(ex)
-        res.status(500).json("Error")
+        res.status(500).json(ex)
         return
     })
   }

@@ -1,26 +1,23 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { Box, Text, Flex, Input, VStack, Button, Image } from "@chakra-ui/react";
+import { Text, Flex, Input, VStack, Button, Image } from "@chakra-ui/react";
 import * as Geetest from "react-geetest";
 import { useEffect, useState } from "react";
-import QRCode from "react-qr-code";
 import axios from "axios";
-import SVG from 'react-inlinesvg';
-import {QRCodeSVG, QRCodeCanvas} from 'qrcode.react';
+import { QRCodeCanvas} from 'qrcode.react';
+import {SHA256} from "crypto-js"
 
 export default function Home() {
 
   const [geetest, setGeetest] = useState({});
   const [qr, setQR] = useState("")
   const [loading, setLoading] = useState(false)
-  var a = 0
+  const [mail, setMail] = useState("")
+  const [password, setPassword] = useState("")
 
   useEffect(() => {
     async function fetchGeetestChallenge() {
       axios
         .get("https://captcha.axieinfinity.com/api/geetest/register")
         .then((data) => {
-          console.log(data.data);
           setGeetest(data.data);
         });
     }
@@ -32,13 +29,13 @@ export default function Home() {
   const login = async () => {
     setLoading(true)
     let obj = {
-      email : "butter.over.here@gmail.com",
-      password : "eb2b635b10e5d29e0f856579b9a0b230c38e8b362640504ad31425a745b42259"
+      email : mail,
+      password : SHA256(password).toString()
     }
     await axios.post("/api/login", obj).then((data)=>{
       setLoading(false)
       setQR(data.data.accessToken)
-    }).catch((err)=>alert("ERROR"))
+    }).catch((err)=>alert(err))
   }
 
   const renderGeetest = () => {
@@ -60,8 +57,8 @@ export default function Home() {
     if(qr == ""){
       return(
         <VStack gap={2}>
-        <Input placeholder="Username" size="md" w={300} />
-        <Input placeholder="Password" size="md" w={300} type={"password"} />
+        <Input placeholder="Username" size="md" w={300} onChange={handleMailChange} />
+        <Input placeholder="Password" size="md" w={300} onChange={handlePasswordChange} type={"password"} />
         {renderGeetest()}
         <Button w={300} isLoading={loading} onClick={()=>{login()}}>Login</Button>
       </VStack>
@@ -69,19 +66,21 @@ export default function Home() {
     }
     else {
       return (
-        <>
+        <VStack gap={2}>
+          <QRCodeCanvas id={"qrCode"} size={300} value={qr} />
           <Button onClick={() => { downloadQR() }}>Download QR</Button>
-          <QRCodeCanvas id={"qrCode"} size={300} value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFlYzllYjZmLTk1M2UtNjNkNC1hNjBjLTc4ZTgyNmY1ZDJjNCIsInNpZCI6OTMxODA5NDcsInJvbGVzIjpbInVzZXIiXSwic2NwIjpbImFsbCJdLCJhY3RpdmF0ZWQiOnRydWUsImFjdCI6dHJ1ZSwib2lkIjozODcwNjg3LCJyb25pbkFkZHJlc3MiOiIweGFmOWQ1MGQ4ZTZlMTllMzE2MzU4M2YyOTNiYjliNDU3Y2QyOGU4YWYiLCJleHAiOjE2NjkyMDkxNTIsImlhdCI6MTY2Nzk5OTU1MiwiaXNzIjoiQXhpZUluZmluaXR5Iiwic3ViIjoiMWVjOWViNmYtOTUzZS02M2Q0LWE2MGMtNzhlODI2ZjVkMmM0In0.o21RSxdwLY1ILBxsEvk33AMqDw4K6fPL1VCcs8ISYOg" />
-        </>
+        </VStack>
       )
     }
   }
 
   const onSuccess = (data) => {
     console.log(data);
-    a = 1
-    console.log(a)
   };
+
+  const handleMailChange = (event) => setMail(event.target.value)
+  const handlePasswordChange = (event) => setPassword(event.target.value)
+
 
   const downloadQR = () => {
     var data = document.getElementById("qrCode").toDataURL("image/png");
