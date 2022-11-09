@@ -19,12 +19,9 @@
     "eslint-config-next": "13.0.2",
     "framer-motion": "6",
     "next": "13.0.2",
-    "next-qrcode": "^2.2.2",
     "qrcode.react": "^3.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-geetest": "^5.0.1",
-    "react-inlinesvg": "^3.0.1",
-    "react-qr-code": "^2.0.8"
+    "react-geetest": "^5.0.1"
   }
 }
