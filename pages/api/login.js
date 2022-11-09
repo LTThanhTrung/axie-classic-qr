@@ -8,8 +8,8 @@ export default async function handler(req, res) {
         return
     })
     .catch((ex)=>{
-        console.log(ex)
-        res.status(500).json(ex)
+        console.log(ex.response.data)
+        res.status(400).json(ex.response.data._errorMessage)
         return
     })
   }

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { QRCodeCanvas} from 'qrcode.react';
 import {SHA256} from "crypto-js"
+import toast from "react-hot-toast";
 
 export default function Home() {
 
@@ -35,7 +36,11 @@ export default function Home() {
     await axios.post("/api/login", obj).then((data)=>{
       setLoading(false)
       setQR(data.data.accessToken)
-    }).catch((err)=>alert(err))
+      toast.success("Finish")
+    }).catch((err)=>{
+      setLoading(false)
+      toast.error(err.response.data)
+    })
   }
 
   const renderGeetest = () => {
@@ -99,7 +104,8 @@ export default function Home() {
     >
       <VStack position={"relative"}>
       <Image src={'/logo.png'} w={400} />
-      <Text fontSize={20} fontWeight={"bold"} position={"absolute"} bottom={4}> QR MAKER</Text>
+      <Text fontSize={20} fontWeight={"bold"} position={"absolute"} bottom={4}> QR MAKER v1.2</Text>
+
       </VStack>
 
       {renderBody()}

@@ -3,6 +3,7 @@ import { Work_Sans } from "@next/font/google";
 import { ChakraProvider } from "@chakra-ui/react";
 import Head from "next/head";
 const workSans = Work_Sans();
+import toast, { Toaster } from 'react-hot-toast';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -17,6 +18,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <ChakraProvider className={workSans.className}>
         <Component {...pageProps} />
+        <Toaster position={"bottom-center"} />
       </ChakraProvider>
     </>
   );
