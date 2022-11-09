@@ -104,7 +104,8 @@ export default function Home() {
     >
       <VStack position={"relative"}>
       <Image src={'/logo.png'} w={400} />
-      <Text fontSize={20} fontWeight={"bold"} position={"absolute"} bottom={4}> QR MAKER v1.2</Text>
+      <Text fontSize={20} fontWeight={"bold"} position={"absolute"} bottom={4}> QR MAKER v1.3</Text>
+      <Text>Author : Hellscream#0001</Text>
 
       </VStack>
 
