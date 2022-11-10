@@ -5,6 +5,7 @@ import axios from "axios";
 import { QRCodeCanvas} from 'qrcode.react';
 import {SHA256} from "crypto-js"
 import toast from "react-hot-toast";
+import {version} from "../package.json"
 
 export default function Home() {
 
@@ -62,7 +63,7 @@ export default function Home() {
     if(qr == ""){
       return(
         <VStack gap={2}>
-        <Input placeholder="Username" size="md" w={300} onChange={handleMailChange} />
+        <Input placeholder="Email" size="md" w={300} onChange={handleMailChange} />
         <Input placeholder="Password" size="md" w={300} onChange={handlePasswordChange} type={"password"} />
         {renderGeetest()}
         <Button w={300} isLoading={loading} onClick={()=>{login()}}>Login</Button>
@@ -104,12 +105,15 @@ export default function Home() {
     >
       <VStack position={"relative"}>
       <Image src={'/logo.png'} w={400} />
-      <Text fontSize={20} fontWeight={"bold"} position={"absolute"} bottom={4}> QR MAKER v1.3</Text>
+      <Text fontSize={20} fontWeight={"bold"} position={"absolute"} bottom={4}> QR MAKER {version}</Text>
       <Text>Author : Hellscream#0001</Text>
 
       </VStack>
 
       {renderBody()}
+
+      <Text position={"absolute"} bottom={10} fontSize={10}>Author note : Hecking Bongolay</Text>
+
     </Flex>
   );
 }
